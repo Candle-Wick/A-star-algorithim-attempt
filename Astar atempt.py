@@ -17,44 +17,46 @@ class node():
 
 
 def Astar(listy): #This is expecting a list of every node within the graph.
-    origin = input("Name:")
+    origin = input("Name:")     #set up of the A* algorithm
     target = input("Destin:")
-    for i in listy:
+    for i in listy:     #finds the target and original node
         if i.name == target:
             tarnode = i
         elif i.name == origin:
             orinode = i
             orinode.d = 0
             orinode.last = [0]
-    for i in listy:
+    for i in listy:     #Assigns each node a heuristic distence from the target node
         xchange = pow(i.x + tarnode.x,2)
         ychange = pow(i.y + tarnode.y,2)
         i.h = sqrt(ychange + xchange)
     nodal = orinode
     queue = []
     final = []
-    while nodal != tarnode:
+    
+    while nodal != tarnode: #The actual A* algorithm
         for i in nodal.p.keys():
             if i not in final:
                 i.last.append(nodal)
                 queue.append(i)
-            if nodal.d + nodal.p[i] + nodal.h <= nodal.p[i]:
+            if nodal.d + nodal.p[i] + nodal.h <= nodal.p[i]: #This accesses the connected nodes to the current node, and replaces the distence from the target node if the new distence is lower
                 nodal.p[i] = nodal.d + nodal.p[i] + nodal.h
 
         final.append(nodal)
         nodal = queue.pop(0)
         queue.sort(key = lambda x: x.d)
-    x = True
+        
+    x = True    #Displaying the output
     truefi = []
     while x:
         try:
             truefi.insert(0,tarnode.name)
             tarnode = tarnode.last[0]
-        except AttributeError:
+        except AttributeError:  #If the tarnode.last is not a list (when it is 0), then the original node has been found.
             x = False
     print(truefi)
 
-
+'''
 #The following is the code used to create a graph for testing purposes.
 
 A = node("a",0,0)
@@ -81,4 +83,4 @@ D.addp(E)
 
 listy = [A,B,C,D,E,F]
 Astar(listy)
-
+'''
